@@ -10,3 +10,8 @@ class TaskResponse(BaseModel):
     title: str
     done: bool
     model_config = {"from_attributes": True}
+
+
+class TaskUpdate(BaseModel):
+    title: str | None = Field(default=None, min_length=1, max_length=200)
+    done: bool | None = None
