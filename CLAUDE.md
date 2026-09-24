@@ -20,6 +20,8 @@ Deploy: front na Vercel, back no Render (render.yaml). Cada `git push` na main f
 - Regra de negócio: `app/services/<recurso>.py`. Rotas ficam finas.
 - Config/segredos: `app/core/config.py` + `.env`. Nada hardcoded. Nova variável → adicionar também
   no painel do Render.
+- `.env.example` vai para o GitHub: só placeholders, NUNCA senha ou URL real do banco. Valores reais
+  ficam no `.env` (ignorado pelo git) e no painel do Render.
 - Antes de concluir: `uv run ruff check . && uv run pytest`.
 
 ## Front (front/, React + Vite + TS + Tailwind)
