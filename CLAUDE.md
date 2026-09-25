@@ -26,6 +26,8 @@ Deploy: front na Vercel, back no Render (render.yaml). Cada `git push` na main f
 
 ## Front (front/, React + Vite + TS + Tailwind)
 - Estilo só com classes Tailwind. Sem arquivos .css novos.
+- UI com componentes shadcn/ui (`@/components/ui`). Falta um? `npx shadcn@latest add <nome>`, não criar na mão.
+  Cores semânticas (`bg-primary`, `text-muted-foreground`), nunca cores cruas.
 - Chamadas HTTP só via `src/services/` usando a instância `api` de `services/api.ts`.
   Caminhos relativos (`/tasks`), nunca URL completa.
 - Tipos das respostas da API em `src/types/`, espelhando os schemas do back.

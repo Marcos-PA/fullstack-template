@@ -1,7 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getHealth } from "../services/healthService";
-import type { HealthResponse } from "../types/health";
+import { ArrowRightIcon, CircleAlertIcon } from "lucide-react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
+import { getHealth } from "@/services/healthService";
+import type { HealthResponse } from "@/types/health";
 
 export default function Home() {
   const [health, setHealth] = useState<HealthResponse | null>(null);
@@ -12,19 +18,47 @@ export default function Home() {
   }, []);
 
   return (
-    <section className="space-y-4">
-      <h1 className="text-3xl font-bold">Projeto pronto</h1>
-      <Link to="/tasks" className="text-emerald-400 underline">Ir para Tasks</Link>
-      <div className="rounded-lg border border-slate-800 p-4">
-        <p className="text-sm text-slate-400">Conexão com o back-end</p>
-        {error && <p className="font-medium text-red-400">Falhou: o back está rodando? (no Render free, a 1ª chamada pode levar ~1 min)</p>}
-        {!error && !health && <p className="text-slate-300">Verificando...</p>}
-        {health && (
-          <p className="font-medium text-emerald-400">
-            API: {health.status} · Banco: {health.database}
-          </p>
-        )}
+    <section className="flex flex-col gap-8">
+      <div className="flex flex-col gap-3">
+        <h1 className="font-heading text-3xl font-semibold tracking-tight">Projeto pronto</h1>
+        <p className="text-muted-foreground">Organize o que precisa ser feito, marque o que já foi.</p>
+        <div>
+          <Button asChild>
+            <Link to="/tasks">
+              Ir para Tasks
+              <ArrowRightIcon data-icon="inline-end" />
+            </Link>
+          </Button>
+        </div>
       </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Status do sistema</CardTitle>
+          <CardDescription>Conexão com o back-end e o banco de dados</CardDescription>
+        </CardHeader>
+        <CardContent>
+          {error ? (
+            <Alert variant="destructive">
+              <CircleAlertIcon />
+              <AlertTitle>Falha ao conectar</AlertTitle>
+              <AlertDescription>
+                O back está rodando? No Render free, a 1ª chamada pode levar ~1 min.
+              </AlertDescription>
+            </Alert>
+          ) : !health ? (
+            <div className="flex gap-2" aria-busy="true">
+              <Skeleton className="h-6 w-24" />
+              <Skeleton className="h-6 w-28" />
+            </div>
+          ) : (
+            <div className="flex flex-wrap gap-2">
+              <Badge variant="secondary">API: {health.status}</Badge>
+              <Badge variant="secondary">Banco: {health.database}</Badge>
+            </div>
+          )}
+        </CardContent>
+      </Card>
     </section>
   );
 }
