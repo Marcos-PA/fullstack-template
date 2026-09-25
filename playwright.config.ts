@@ -13,7 +13,7 @@ import { defineConfig, devices } from '@playwright/test';
  */
 export default defineConfig({
   testDir: './tests',
-  /* Os testes compartilham o banco real: um worker só, para o contador de tasks não disputar. */
+  /* Os testes compartilham um banco: um worker só, para o contador de tasks não disputar. */
   fullyParallel: false,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
@@ -26,7 +26,7 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('')`. */
-    baseURL: 'http://localhost:5173',
+    baseURL: 'http://localhost:5174',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
@@ -70,19 +70,21 @@ export default defineConfig({
     // },
   ],
 
-  /* Sobe back e front (ou reaproveita os que já estão rodando). */
+  /* Stack isolada para E2E: back em :8001 com SQLite descartável, front em :5174. Nunca toca o Supabase. */
   webServer: [
     {
-      command: 'uv run uvicorn app.main:app --port 8000',
+      command: 'rm -f e2e.db && uv run uvicorn app.main:app --port 8001',
       cwd: './back',
-      url: 'http://localhost:8000/api/health',
-      reuseExistingServer: !process.env.CI,
+      env: { DATABASE_URL: 'sqlite:///./e2e.db' },
+      url: 'http://localhost:8001/api/health',
+      reuseExistingServer: false,
     },
     {
-      command: 'npm run dev',
+      command: 'npm run dev -- --port 5174 --strictPort',
       cwd: './front',
-      url: 'http://localhost:5173',
-      reuseExistingServer: !process.env.CI,
+      env: { API_PROXY_TARGET: 'http://localhost:8001' },
+      url: 'http://localhost:5174',
+      reuseExistingServer: false,
     },
   ],
 });

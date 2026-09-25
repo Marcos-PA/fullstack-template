@@ -6,6 +6,7 @@ Deploy: front na Vercel, back no Render (render.yaml). Cada `git push` na main f
 ## Prioridade (projeto de 2h)
 - Funcionalidade que o enunciado pede > código bonito. Sem auth, testes extras ou libs novas se não forem pedidos.
 - Faça commit e push a cada feature funcionando, para testar na URL pública cedo.
+- Novo CRUD (entidade/cadastro): use a skill `/novo-recurso <nome> <campo:tipo>...`. Task é o exemplo de referência.
 
 ## Back (back/, FastAPI + uv)
 - Dependências: sempre `uv add <pacote>` (dev: `uv add --dev`). Nunca pip. Commitar o `uv.lock`.
@@ -30,7 +31,16 @@ Deploy: front na Vercel, back no Render (render.yaml). Cada `git push` na main f
   Cores semânticas (`bg-primary`, `text-muted-foreground`), nunca cores cruas.
 - Chamadas HTTP só via `src/services/` usando a instância `api` de `services/api.ts`.
   Caminhos relativos (`/tasks`), nunca URL completa.
+- Erros de API: `toast.error(getErrorMessage(err, "mensagem padrão"))` (de `services/api.ts`), que
+  mostra o `detail` do FastAPI (404, 422).
 - Tipos das respostas da API em `src/types/`, espelhando os schemas do back.
 - Páginas em `src/pages/` (registradas em `App.tsx`), componentes reutilizáveis em `src/components/`,
   hooks em `src/hooks/`, layouts em `src/layouts/`.
 - Antes de concluir: `npm run build` (a Vercel falha no deploy se o build falhar).
+
+## Testes E2E (Playwright, na raiz)
+- `npm run test:e2e` sobe back (:8001, SQLite `back/e2e.db` recriado a cada execução) e front (:5174)
+  isolados. Não toca no banco de dev nem no Supabase.
+- Testes em `tests/app.spec.ts`. Linhas de lista: `page.getByRole("main").getByRole("listitem")`
+  (toasts do sonner também são `<li>`).
+- Rápido durante o desenvolvimento: `npx playwright test --project=chromium`.

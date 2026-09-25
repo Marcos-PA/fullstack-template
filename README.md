@@ -1,6 +1,6 @@
 # fullstack-template
 
-React + Vite + TS + Tailwind · FastAPI + SQLAlchemy · Postgres (Supabase).
+React + Vite + TS + Tailwind + shadcn/ui · FastAPI + SQLAlchemy · Postgres (Supabase) · Playwright.
 Deploy grátis: Vercel (front) + Render (back) + Supabase (banco).
 
 ## Rodando em dev
@@ -9,6 +9,30 @@ Deploy grátis: Vercel (front) + Render (back) + Supabase (banco).
     cd front && npm install && npm run dev
 
 Dev usa SQLite (`back/app.db`), sem precisar de Postgres. O front chama `/api/*` e o Vite repassa ao back.
+
+## Testes
+
+    cd back && uv run ruff check . && uv run pytest     # API
+    npm install && npx playwright install               # 1ª vez, na raiz
+    npm run test:e2e                                    # E2E em Chromium, Firefox e WebKit
+
+O E2E sobe sua própria stack (back :8001 com SQLite descartável, front :5174): não mexe no
+banco de dev nem no Supabase, e pode rodar com o dev ligado. Relatório: `npx playwright show-report`.
+
+## Criando um recurso novo (Claude Code)
+
+    /novo-recurso produto nome:str preco:float categoria:enum(alimento|limpeza) ativo:bool
+
+Gera model, schema, service, rota e teste no back, e tipo, service e página (shadcn) no front,
+seguindo o `CLAUDE.md`. Tipos: `str text int float bool date enum(a|b) fk:<alvo>`.
+
+## Front: UI
+
+Componentes [shadcn/ui](https://ui.shadcn.com) em `front/src/components/ui` (já instalados: button, card,
+input, input-group, field, checkbox, select, dialog, alert-dialog, table, tabs, dropdown-menu, calendar,
+popover, pagination, badge, alert, skeleton, empty, sonner, spinner, toggle-group...).
+Faltou um: `cd front && npx shadcn@latest add <nome>`.
+Erros da API viram toast com a mensagem do back: `toast.error(getErrorMessage(err, "fallback"))`.
 
 ## Deploy (primeira vez, ~15 min)
 

@@ -12,6 +12,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Spinner } from "@/components/ui/spinner";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { cn } from "@/lib/utils";
+import { getErrorMessage } from "@/services/api";
 import { createTask, deleteTask, listTasks, updateTask } from "@/services/taskService";
 import type { Task } from "@/types/task";
 
@@ -32,9 +33,9 @@ export default function Tasks() {
   useEffect(() => {
     listTasks()
       .then(setTasks)
-      .catch(() => {
+      .catch((err) => {
         setTasks([]);
-        toast.error("Não foi possível carregar as tasks.", { id: "load-tasks" });
+        toast.error(getErrorMessage(err, "Não foi possível carregar as tasks."), { id: "load-tasks" });
       });
   }, []);
 
@@ -46,8 +47,8 @@ export default function Tasks() {
       const task = await createTask(title.trim());
       setTasks((prev) => [...(prev ?? []), task]);
       setTitle("");
-    } catch {
-      toast.error("Não foi possível adicionar a task.");
+    } catch (err) {
+      toast.error(getErrorMessage(err, "Não foi possível adicionar a task."));
     } finally {
       setAdding(false);
     }
@@ -57,8 +58,8 @@ export default function Tasks() {
     try {
       const updated = await updateTask(task.id, { done: !task.done });
       setTasks((prev) => prev?.map((t) => (t.id === updated.id ? updated : t)) ?? null);
-    } catch {
-      toast.error("Não foi possível atualizar a task.");
+    } catch (err) {
+      toast.error(getErrorMessage(err, "Não foi possível atualizar a task."));
     }
   }
 
@@ -67,8 +68,8 @@ export default function Tasks() {
       await deleteTask(task.id);
       setTasks((prev) => prev?.filter((t) => t.id !== task.id) ?? null);
       toast.success(`"${task.title}" excluída.`);
-    } catch {
-      toast.error("Não foi possível excluir a task.");
+    } catch (err) {
+      toast.error(getErrorMessage(err, "Não foi possível excluir a task."));
     }
   }
 

@@ -1,6 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 
-// Os testes usam o banco real (.env do back): cada task criada leva TAG e é apagada no afterAll.
+// Banco SQLite descartável (ver webServer no playwright.config.ts), recriado a cada execução.
 const TAG = `[e2e ${Date.now()}]`;
 const a = `${TAG} Primeira`;
 const b = `${TAG} Segunda`;
@@ -9,13 +9,6 @@ const b = `${TAG} Segunda`;
 const row = (page: Page, title: string) => page.getByRole("main").getByRole("listitem").filter({ hasText: title });
 const input = (page: Page) => page.getByLabel("Nova task");
 const addButton = (page: Page) => page.getByRole("button", { name: "Adicionar", exact: true });
-
-test.afterAll(async ({ request }) => {
-  const tasks: { id: number; title: string }[] = await (await request.get("/api/tasks")).json();
-  for (const t of tasks.filter((t) => t.title.startsWith(TAG))) {
-    await request.delete(`/api/tasks/${t.id}`);
-  }
-});
 
 test("home mostra status da API e do banco", async ({ page }) => {
   await page.goto("/");
@@ -95,6 +88,17 @@ test.describe.serial("tasks", () => {
     await page.getByRole("button", { name: `Excluir "${a}"` }).click();
     await expect(row(page, a)).toHaveCount(0);
   });
+});
+
+test("erro da API mostra a mensagem do back no toast", async ({ page, request }) => {
+  const title = `${TAG} Apagada em outra aba`;
+  const { id } = await (await request.post("/api/tasks", { data: { title } })).json();
+  await page.goto("/tasks");
+  await expect(row(page, title)).toBeVisible();
+
+  await request.delete(`/api/tasks/${id}`);
+  await page.getByRole("button", { name: `Excluir "${title}"` }).click();
+  await expect(page.getByText("Task não encontrada")).toBeVisible();
 });
 
 test("mobile 390px sem scroll horizontal", async ({ page }) => {
