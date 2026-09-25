@@ -1,5 +1,8 @@
 import os
+from pathlib import Path
 
+# Banco novo a cada execução: senão um teste de campo único (2º POST = 409) falha na 2ª rodada.
+Path("test.db").unlink(missing_ok=True)
 os.environ["DATABASE_URL"] = "sqlite:///./test.db"
 
 from fastapi.testclient import TestClient

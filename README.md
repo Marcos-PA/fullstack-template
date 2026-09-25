@@ -24,7 +24,9 @@ banco de dev nem no Supabase, e pode rodar com o dev ligado. Relatório: `npx pl
     /novo-recurso produto nome:str preco:float categoria:enum(alimento|limpeza) ativo:bool
 
 Gera model, schema, service, rota e teste no back, e tipo, service e página (shadcn) no front,
-seguindo o `CLAUDE.md`. Tipos: `str text int float bool date enum(a|b) fk:<alvo>`.
+seguindo o `CLAUDE.md`. Tipos: `str text int float bool date time datetime email enum(a|b) fk:<alvo>`;
+`campo?` opcional, `campo!` único, `campo=` preenchido pelo back, `sem:editar,excluir` para registros
+que não mudam depois de criados. Detalhes e código de referência em `.claude/skills/novo-recurso/`.
 
 ## Front: UI
 
