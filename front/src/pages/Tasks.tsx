@@ -34,7 +34,7 @@ export default function Tasks() {
       .then(setTasks)
       .catch(() => {
         setTasks([]);
-        toast.error("Não foi possível carregar as tasks.");
+        toast.error("Não foi possível carregar as tasks.", { id: "load-tasks" });
       });
   }, []);
 
