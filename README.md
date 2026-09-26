@@ -3,6 +3,8 @@
 React + Vite + TS + Tailwind + shadcn/ui · FastAPI + SQLAlchemy · Postgres (Supabase) · Playwright.
 Deploy grátis: Vercel (front) + Render (back) + Supabase (banco).
 
+**Usando em entrevista:** veja o [GUIA.md](GUIA.md) (enunciado → plano → repo → recursos → deploy).
+
 ## Rodando em dev
 
     cd back && cp .env.example .env && uv sync && uv run uvicorn app.main:app --reload
@@ -21,12 +23,12 @@ banco de dev nem no Supabase, e pode rodar com o dev ligado. Relatório: `npx pl
 
 ## Criando um recurso novo (Claude Code)
 
-    /novo-recurso produto nome:str preco:float categoria:enum(alimento|limpeza) ativo:bool
+    /new-resource produto nome:str preco:float categoria:enum(alimento|limpeza) ativo:bool
 
 Gera model, schema, service, rota e teste no back, e tipo, service e página (shadcn) no front,
 seguindo o `CLAUDE.md`. Tipos: `str text int float bool date time datetime email enum(a|b) fk:<alvo>`;
-`campo?` opcional, `campo!` único, `campo=` preenchido pelo back, `sem:editar,excluir` para registros
-que não mudam depois de criados. Detalhes e código de referência em `.claude/skills/novo-recurso/`.
+`campo?` opcional, `campo!` único, `campo=` preenchido pelo back, `no:edit,delete` para registros
+que não mudam depois de criados. Detalhes e código de referência em `.claude/skills/new-resource/`.
 
 ## Front: UI
 
@@ -50,7 +52,7 @@ Erros da API viram toast com a mensagem do back: `toast.error(getErrorMessage(er
    - Env var `VITE_API_URL` = `https://<seu-app>.onrender.com/api`.
 5. **Volte ao Render** e troque `CORS_ORIGINS` para `["https://<seu-app>.vercel.app"]`
    (sem barra no final). Ele reinicia sozinho.
-6. Abra a URL da Vercel → Home mostra "API: ok · Banco: ok" → /tasks salva e lista.
+6. Abra a URL da Vercel → Home mostra "API: ok · Banco: ok" 
 
 Depois disso: `git push` na main = deploy automático dos dois.
 

@@ -6,7 +6,7 @@ Deploy: front na Vercel, back no Render (render.yaml). Cada `git push` na main f
 ## Prioridade (projeto de 2h)
 - Funcionalidade que o enunciado pede > código bonito. Sem auth, testes extras ou libs novas se não forem pedidos.
 - Faça commit e push a cada feature funcionando, para testar na URL pública cedo.
-- Novo CRUD (entidade/cadastro): use a skill `/new-resource <nome> <campo:tipo>...`. Task é o exemplo de referência.
+- Novo CRUD (entidade/cadastro): use a skill `/new-resource <nome> <campo:tipo>...`. Código de referência em `.claude/skills/new-resource/reference/`.
 
 ## Back (back/, FastAPI + uv)
 - Dependências: sempre `uv add <pacote>` (dev: `uv add --dev`). Nunca pip. Commitar o `uv.lock`.
@@ -30,7 +30,7 @@ Deploy: front na Vercel, back no Render (render.yaml). Cada `git push` na main f
 - UI com componentes shadcn/ui (`@/components/ui`). Falta um? `npx shadcn@latest add <nome>`, não criar na mão.
   Cores semânticas (`bg-primary`, `text-muted-foreground`), nunca cores cruas.
 - Chamadas HTTP só via `src/services/` usando a instância `api` de `services/api.ts`.
-  Caminhos relativos (`/tasks`), nunca URL completa.
+  Caminhos relativos (`/health`), nunca URL completa.
 - Erros de API: `toast.error(getErrorMessage(err, "mensagem padrão"))` (de `services/api.ts`), que
   mostra o `detail` do FastAPI (404, 422).
 - Tipos das respostas da API em `src/types/`, espelhando os schemas do back.

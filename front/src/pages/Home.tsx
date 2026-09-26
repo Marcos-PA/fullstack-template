@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { ArrowRightIcon, CircleAlertIcon } from "lucide-react";
+import { CircleAlertIcon } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getHealth } from "@/services/healthService";
@@ -21,15 +19,7 @@ export default function Home() {
     <section className="flex flex-col gap-8">
       <div className="flex flex-col gap-3">
         <h1 className="font-heading text-3xl font-semibold tracking-tight">Projeto pronto</h1>
-        <p className="text-muted-foreground">Organize o que precisa ser feito, marque o que já foi.</p>
-        <div>
-          <Button asChild>
-            <Link to="/tasks">
-              Ir para Tasks
-              <ArrowRightIcon data-icon="inline-end" />
-            </Link>
-          </Button>
-        </div>
+        <p className="text-muted-foreground">Template pronto para começar.</p>
       </div>
 
       <Card>
@@ -54,7 +44,9 @@ export default function Home() {
           ) : (
             <div className="flex flex-wrap gap-2">
               <Badge variant="secondary">API: {health.status}</Badge>
-              <Badge variant="secondary">Banco: {health.database}</Badge>
+              <Badge variant={health.database === "ok" ? "secondary" : "destructive"}>
+                Banco: {health.database}
+              </Badge>
             </div>
           )}
         </CardContent>

@@ -51,8 +51,8 @@ the template.
 
 | File | Change |
 | --- | --- |
-| `front/index.html` | `<title>Tasks</title>` → `<title><title></title>` |
-| `front/src/layouts/MainLayout.tsx` | the brand text `Tasks` inside the header's `<Link to="/" ...>` → `<title>` (don't touch the "Tasks" link in the `links` array: it stays until Task is removed) |
+| `front/index.html` | `<title>Fullstack Template</title>` → `<title><title></title>` |
+| `front/src/layouts/MainLayout.tsx` | the brand text `Fullstack Template` inside the header's `<Link to="/" ...>` → `<title>` |
 | `front/src/pages/Home.tsx` | `Projeto pronto` → `<title>` |
 | `tests/app.spec.ts` | `{ name: "Projeto pronto" }` → `{ name: "<title>" }` (otherwise the E2E breaks) |
 | `README.md` | 1st line `# fullstack-template` → `# <title>`; right below, one line: `Feito a partir do [fullstack-template](https://github.com/Marcos-PA/fullstack-template).` |

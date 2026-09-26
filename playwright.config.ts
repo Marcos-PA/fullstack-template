@@ -13,7 +13,7 @@ import { defineConfig, devices } from '@playwright/test';
  */
 export default defineConfig({
   testDir: './tests',
-  /* Os testes compartilham um banco: um worker só, para o contador de tasks não disputar. */
+  /* Os testes compartilham um banco: um worker só, para não disputarem os dados. */
   fullyParallel: false,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,

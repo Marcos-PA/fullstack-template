@@ -43,7 +43,7 @@ Read the whole text before deciding anything. Then:
 6. **What the template doesn't have ready** (login/auth, file upload, charts, email, external API,
    real time): say what it is, the cost in minutes and the minimal version that meets the brief. If
    the brief **requires** it, it goes into the plan; if it's a "differential"/"bonus", it goes to extras.
-   **Login** has a hidden cost: protecting the routes breaks the existing tests (Task pytest and
+   **Login** has a hidden cost: protecting the routes breaks the existing tests (pytest and
    `tests/app.spec.ts`), which then need a token. In the same step, add a test helper that registers,
    logs in and returns the headers, and count ≈ 40 min total. Minimal version with no new lib:
    password with `hashlib.scrypt` and a `secrets.token_urlsafe()` token stored on the user.
@@ -106,10 +106,7 @@ MVP live in ≈ N min · Extras, if time allows: <list in order of value>
   Each step ends with the `/new-resource` check (ruff, pytest, build) and commit + push.
 - **Business rules right after the resource they belong to**, with the test alongside.
 - **Screens that combine resources** (dashboard, "overdue", report) after the resources they use.
-- **Task is the `/new-resource` reference example**: don't delete it at the start. In the last MVP
-  step, remove Task (back, front, pytest and route/link) **and replace its tests in `tests/app.spec.ts`**
-  with an E2E of the project's main flow; the generic tests (home with status, mobile, API down,
-  clean console) just need to point to the new page. Without this, `npm run test:e2e` breaks.
+- **Add one E2E of the project's main flow** to `tests/app.spec.ts` in the last MVP step.
 - **Last MVP step:** open the public URL, run the main flow by hand and update the README with what
   was done and the assumptions made (the evaluator reads the README).
 - Estimate minutes per step. A simple CRUD via `/new-resource` ≈ 10-15 min; with `fk` ≈ 15-20; a

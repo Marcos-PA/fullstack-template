@@ -9,9 +9,6 @@ argument-hint: <name> <field:type>... [no:edit,delete]  e.g.: livro titulo:str i
 Request: `$ARGUMENTS`
 
 References, in this order:
-- **Task** (`back/app/**/task*.py`, `front/src/pages/Tasks.tsx`): file structure, names, thin
-  routes, service with 404. Tasks.tsx is a single-field list: don't use its layout for resources
-  with a form.
 - **`reference/`** (in this skill's folder), code from a real project that passed ruff, pytest,
   build and E2E. Use it as a template, swapping names and fields:
   - `Livros.tsx`: page with `Table`, create/edit `Dialog`, delete `AlertDialog`, optional numeric
@@ -99,12 +96,12 @@ show the target's name, not the id.
 
 ## Back (`back/`)
 
-1. `app/models/<resource>.py`: class inheriting `Base` (like `models/task.py`).
+1. `app/models/<resource>.py`: class inheriting `Base`.
    **Import it in `app/models/__init__.py`**, otherwise the table isn't created.
 2. `app/schemas/<resource>.py`: `<R>Create` (without the `=` fields), `<R>Update` (all optional with
    `default=None`, without the `=` ones; doesn't exist with `no:edit`) and `<R>Response` with
    `model_config = {"from_attributes": True}`.
-3. `app/services/<resources>.py`: the functions from "Names" above, like `services/tasks.py`. With
+3. `app/services/<resources>.py`: the functions from "Names" above. With
    several fields, `create_` uses `Model(**data.model_dump())` and sets the `=` ones afterwards.
 4. `app/api/routes/<resource>.py`: `APIRouter(prefix="/<resources>", tags=["<resources>"])` with
    GET list, POST (201), PATCH `/{id}` and DELETE `/{id}` (204), minus what `no:` removed. Thin
